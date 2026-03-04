@@ -2,6 +2,10 @@ import funciones
 mis_empresas = []
 empresa_status_loggin = None
 while True:
+    print("Seleccione la opcion que desee-->")
+    print("1-Crear empresa")
+    print("2-Buscar ID empresarial")
+    print("3-Salir del sistema")
     if empresa_status_loggin == None:
      print("Ninguna empresa activa")
     else:
@@ -10,6 +14,7 @@ while True:
     opciones_empresas = input("Introduce la opcion que desee-->").strip()
     if opciones_empresas not in ("1","2","3"):
      print("Invalido debe seleccionar de la opcion 1 al 3")
+     continue
 
     if opciones_empresas =="1":
         print("Puede empezar a crear su empresa")
@@ -25,6 +30,11 @@ while True:
         print("Salir")
         break
 
+from funciones import*#CON ESTO IMPORTAMOS TODAS LAS FUNCIONES.PY
+facturas_606 = []#LISTA QUE ACTUA COMO MINI BASES DE DATOS
+
+menu_registro(facturas_606)
+print("Programa ha iniciado")
 
        
 
