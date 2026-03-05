@@ -56,6 +56,7 @@ def campo_fecha(mensaje):#FUNCION REUTILIZABLE, PARA CUALQUIER FECHA
         except ValueError:
            print("Formato invalido")
 
+#ESTE CAMPO ES EXCLUSIVAMENTE PARA REGLAS DE NCF, QUE TENGA UN RANGO MINIMO DE CARACTERES A UN RANGO MAXIMO DE CARACTERES 
 def campo_ncf(mensaje):
    while True:
       ncf = campo_texto(mensaje)
@@ -64,6 +65,42 @@ def campo_ncf(mensaje):
         return ncf
       else:
          print("Debe introducir un minimo de 11 caracteres y un limite de 13")
+
+#ESTE CAMPO ES EXCLUSIVO PARA ENCAPSULAR REGLAR CONTABLES DE ISC , SE LE DA UN MARGEN DE ERROR DE 3 PESOS , POR POSIBLES REDONDEOS 
+def campo_isc(mensaje,monto_neto):
+   while True:
+     valor_isc = campo_float((mensaje))
+     if valor_isc < 0:
+        print("No se aceptan numeros negativos")
+        continue
+     if valor_isc > (monto_neto * 0.10) +3:
+      print("El monto de ISC, no puede ser mayor al 10%,pero tiene un margen de error de 3 pesos")
+      continue    
+     return valor_isc
+
+#ESTE CAMPO ES EXCLUSIVO PARA ENCAPSULAR REGLAR CONTABLES DE CDT , SE LE DA UN MARGEN DE ERROR DE 3 PESOS , POR POSIBLES REDONDEOS 
+def campo_cdt(mensaje,monto_neto):
+   while True:
+      valor_cdt = campo_float((mensaje))
+      if valor_cdt < 0:
+         print("No se aceptan numeros ngeativos")
+         continue
+      if valor_cdt > (monto_neto *0.02)+3:
+         print("El monto de CDT, no puede ser mayor al 2%,pero tiene un margen de error de 3 pesos")
+         continue
+      return valor_cdt
+
+def campo_10_ley(mensaje,monto_neto):
+   while True:
+      propina_10_ley = campo_float(mensaje)
+      if propina_10_ley < 0:
+         print("Monto,invalido , no puede introducir numeros negativos")
+         continue
+      if propina_10_ley > (monto_neto * 0.10)+3:
+         print("El monto de la propina legal no puede ser mayor al 10% , tieme un margen derror de 3 pesos")
+         continue
+      return propina_10_ley
+   
 
 #---------------FUNCION BASE DE REGISTRO DE FACTURAS-------------------
 def registrar_gasto(facturas):# ESTA SER LA FUNCION BASE DE LAS FACTURAS
@@ -85,8 +122,14 @@ def registrar_gasto(facturas):# ESTA SER LA FUNCION BASE DE LAS FACTURAS
             print("EL itbs no puede ser mayor al monto neto")
             continue
         break
+   isc = 0
+   cdt = 0
+   ley_10 = 0
 
-   total = monto_neto + itbs 
+   total = monto_neto + itbs + isc + cdt + ley_10
+   concepto = campo_texto("Concepto del gasto-->").strip()
+   comentario = input("Comentario (Opcional)-->").strip().upper()
+
 
    factura = {#AQUI CREAMOS LA LISTA , DE TODO LO QUE TENGA QUE VER CON FACTURA Y DE LA FORMA QUE LA VISUALIZAREMOS
          "proveedor":proveedor,
@@ -95,14 +138,19 @@ def registrar_gasto(facturas):# ESTA SER LA FUNCION BASE DE LAS FACTURAS
          "fecha":fecha,
          "monto_neto":monto_neto,
          "itbs":itbs,
-         "total":total
+         "isc": isc,
+         "cdt": cdt,
+         "ley_10":ley_10,
+         "total":total,
+         "concepto":concepto,
+         "comentario":comentario
            }
-   facturas.append(factura)
    print(f"\n✅ Registro exitoso.")
    print(f"Su número de factura registrado es el #{len(facturas)}") #AQUI VALIDAMOS TOTAL DE FACTURAS
    print(f"Proovedor{proveedor}--,Factura {ncf} --registrada. Total:-- {total},")#AQUI SE VALIDA EL TOTAL DE LA FACTURA CON LOS DATOS MAS IMPORTANTE
     
-   return facturas
+   return guardar_factura_bodega(facturas, ncf, proveedor, rnc, fecha, monto_neto, itbs, isc, cdt, ley_10, concepto, comentario)
+  
     
 def configurar_empresa():#CON ESTA FUNCION VAMOS A DECIDIR SI EL CLIENTE NECESITA SU DECLARACION FISCA ORDINARIO O RST
    nombre = campo_texto("Introduca el nombre").strip()
@@ -127,7 +175,7 @@ def configurar_empresa():#CON ESTA FUNCION VAMOS A DECIDIR SI EL CLIENTE NECESIT
    #DEVOLVEMOS LOS DATOS CON RETURN
    return nombre, rnc, regimen
 #AQUI SE VA ALMACENAR TODOS LOS DATOS QUE TIENE UNA FACTURA
-def guardar_factura_bodega(facturas, ncf, proveedor, rnc, fecha, monto_neto, itbs, isc=0, cdt=0, ley_10=0):
+def guardar_factura_bodega(facturas, ncf, proveedor, rnc, fecha, monto_neto, itbs, isc=0, cdt=0, ley_10=0,concepto="",comentario="0"):
     total = monto_neto + itbs + isc + cdt + ley_10
     
     factura = {
@@ -140,7 +188,9 @@ def guardar_factura_bodega(facturas, ncf, proveedor, rnc, fecha, monto_neto, itb
         "isc": isc,
         "cdt": cdt,
         "ley_10": ley_10,
-        "total": total     
+        "total": total,
+        "concepto":concepto,
+        "comentario":comentario    
     }
     facturas.append(factura)
     print(f"\n Registro exitoso. Total: {total}")
@@ -148,15 +198,21 @@ def guardar_factura_bodega(facturas, ncf, proveedor, rnc, fecha, monto_neto, itb
 
 #FUNCION ESPECIALMENTE PARA LOS GASTOS DE RESTAURANTE
 def registrar_telecom(facturas):
+   print("Registros de telecomunicaciones")
+
    ncf = campo_ncf("NCF-->").upper()
-   proveedor = campo_texto("Proveedor").strip()
+   proveedor = campo_texto("Proveedor-->").strip()
    rnc = campo_texto("RNC-->").strip()
    fecha = campo_fecha("Introduzca su fecha, ejm 11/04/2026-->")
    monto_neto = campo_float("Monto neto-->")
-   itbs = monto_neto * 0.18
-   isc = monto_neto * 0.10
-   cdt = monto_neto * 0.02
-   return guardar_factura_bodega(facturas,ncf,proveedor,rnc,fecha,monto_neto,itbs,isc,cdt)
+   itbs = campo_float("ITBS")
+   isc = campo_isc("ISC-->",monto_neto)
+   cdt = campo_cdt("CDT-->")
+   ley_10 = 0
+   concepto = campo_texto("Concepto del gasto-->").strip()
+   comentario = input("Comentario (Opcional)-->").strip().upper()
+
+   return guardar_factura_bodega(facturas,ncf,proveedor,rnc,fecha,monto_neto,itbs,isc,cdt,ley_10,concepto, comentario)
 
 #FUNCION PARA TIPO GASTO FACTURA RESTAURANTE
 def registrar_restaurante(facturas):
@@ -168,8 +224,10 @@ def registrar_restaurante(facturas):
    monto_neto = campo_float("Monto neto-->")
    itbs = monto_neto * 0.18
    ley_10 = monto_neto * 0.10
+   concepto = campo_texto("Concepto del gasto-->").strip()
+   comentario = input("Comentario (Opcional)-->").strip().upper()
 
-   return guardar_factura_bodega(facturas,ncf,proveedor,rnc,fecha,monto_neto,itbs,0,0,ley_10)
+   return guardar_factura_bodega(facturas,ncf,proveedor,rnc,fecha,monto_neto,itbs,0,0,ley_10,concepto,comentario)
 
 def menu_registro(facturas):#AQUI ES DONDE REGISTRAREMOS EL TIPO DE FACTURA , SEGUN LOS QUE NOS CONVENGAN
    
