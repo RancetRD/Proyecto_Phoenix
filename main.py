@@ -1,4 +1,5 @@
 
+
 print("Proyecto Phoenix activo")
 
 import funciones
@@ -36,7 +37,7 @@ while True:
 from funciones import*#CON ESTO IMPORTAMOS TODAS LAS FUNCIONES.PY
 
 
-print("Proyecto funcionandooooooooo")
+print("Proyecto funcionandooooooooooo")
        
 
 
@@ -44,3 +45,5 @@ print("Proyecto funcionandooooooooo")
 
     
 
+
+print("Proyecto Phoenix activo")
