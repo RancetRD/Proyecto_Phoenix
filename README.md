@@ -1,4 +1,3 @@
-```markdown
 <p align="center">
 <img src="https://img.shields.io/badge/PHOENIX-OCR_SYSTEM-red?style=for-the-badge&logo=python">
 </p>
@@ -31,10 +30,15 @@ fill="#ff3b3b"/>
 
 # 🚀 Phoenix Project
 
-Phoenix es un sistema desarrollado en Python para **automatizar el procesamiento de facturas y datos contables**.  
-El objetivo es reducir trabajo manual mediante automatización inteligente y procesamiento estructurado de datos.
+Phoenix es un sistema desarrollado en **Python** para automatizar el procesamiento de facturas y datos contables.
 
-El proyecto busca evolucionar hacia un sistema capaz de **leer facturas automáticamente mediante OCR**, organizar la información y prepararla para uso contable.
+El objetivo es **reducir trabajo manual mediante automatización inteligente y procesamiento estructurado de datos**.
+
+El proyecto evolucionará hacia un sistema capaz de:
+
+- Leer facturas automáticamente mediante OCR  
+- Organizar información contable  
+- Automatizar procesos administrativos  
 
 ---
 
@@ -42,17 +46,17 @@ El proyecto busca evolucionar hacia un sistema capaz de **leer facturas automát
 
 Phoenix permite:
 
-- Registrar facturas
-- Procesar montos automáticamente
-- Calcular ITBIS
-- Organizar datos contables
-- Preparar información para automatización futura
+- Registrar facturas  
+- Procesar montos automáticamente  
+- Calcular ITBIS  
+- Organizar datos contables  
+- Preparar información para automatización futura  
 
-El sistema está diseñado con una arquitectura modular que permitirá integraciones futuras como:
+El sistema está diseñado con una **arquitectura modular**, lo que permitirá integraciones futuras como:
 
-- OCR para lectura automática de facturas
-- Exportación a Excel
-- Integración con sistemas contables
+- OCR para lectura automática de facturas  
+- Exportación a Excel  
+- Integración con sistemas contables  
 
 ---
 
@@ -61,15 +65,16 @@ El sistema está diseñado con una arquitectura modular que permitirá integraci
 1️⃣ El usuario registra una factura  
 
 2️⃣ El sistema captura:
-- empresa
-- monto
-- categoría
+
+- empresa  
+- monto  
+- categoría  
 
 3️⃣ Phoenix procesa los datos automáticamente  
 
-4️⃣ El sistema calcula el ITBIS  
+4️⃣ El sistema calcula el **ITBIS**
 
-5️⃣ Los datos se organizan dentro del sistema  
+5️⃣ Los datos se organizan dentro del sistema
 
 6️⃣ Futuras versiones incluirán:
 
@@ -82,17 +87,15 @@ El sistema está diseñado con una arquitectura modular que permitirá integraci
 # 🧠 Arquitectura del Sistema
 
 ```
-
 Usuario
-│
-▼
+   │
+   ▼
 Sistema Phoenix
-│
-├── Registro de facturas
-├── Procesamiento de datos
-├── Cálculo de impuestos
-└── Organización contable
-
+   │
+   ├── Registro de facturas
+   ├── Procesamiento de datos
+   ├── Cálculo de impuestos
+   └── Organización contable
 ```
 
 ---
@@ -126,31 +129,29 @@ Sistema Phoenix
 
 # 💻 Ejecución del Sistema
 
-```
-
+```python
 python main.py
-
 ```
 
 Ejemplo de salida del sistema:
 
-Empresa: Claro  
-Monto: 12000  
-ITBIS: 2160  
+```
+Empresa: Claro
+Monto: 12000
+ITBIS: 2160
+```
 
 ---
 
 # 📂 Estructura del Proyecto
 
 ```
-
 Proyecto_Phoenix
 │
 ├── main.py
 ├── funciones.py
 ├── datos/
 └── README.md
-
 ```
 
 ---
@@ -158,7 +159,7 @@ Proyecto_Phoenix
 # 📍 Roadmap del Proyecto
 
 | Feature | Estado |
-|-------|------|
+|--------|--------|
 | Registro de facturas | ✅ |
 | Cálculo de ITBIS | ✅ |
 | Organización de datos | ✅ |
@@ -170,11 +171,10 @@ Proyecto_Phoenix
 
 # 👨‍💻 Autor
 
-Peter  
+**Peter**
 
 Backend Developer  
 Python Automation  
 Contabilidad + Programación
 
 ---
-```
